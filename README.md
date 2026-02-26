@@ -183,12 +183,6 @@ http://localhost:8080
 
 ---
 
-# 👨‍💻 Author
-
-Built as a professional portfolio project focused on full-stack development and clean architecture.
-
----
-
 # 📄 License
 
-This project is for educational and portfoli
+This project is for educational and portfolio purposes.

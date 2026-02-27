@@ -29,12 +29,42 @@ public class ApplicationService {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow();
 
+        boolean alreadyApplied = applicationRepository
+                .existsByCandidateIdAndJobId(candidate.getId(), jobId);
+
+        if (alreadyApplied) {
+            throw new RuntimeException("You already applied to this job");
+        }
+
         Application application = Application.builder()
                 .candidate(candidate)
                 .job(job)
                 .status(ApplicationStatus.PENDING)
                 .build();
 
+        applicationRepository.save(application);
+    }
+
+    public void updateStatus(Long applicationId, String status, String companyEmail) {
+
+        User company = userRepository.findByEmail(companyEmail)
+                .orElseThrow();
+
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new RuntimeException("Application not found"));
+
+        if (!application.getJob().getCompany().getId().equals(company.getId())) {
+            throw new RuntimeException("You are not allowed to update this application");
+        }
+
+        ApplicationStatus nextStatus;
+        try {
+            nextStatus = ApplicationStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            throw new RuntimeException("Invalid application status");
+        }
+
+        application.setStatus(nextStatus);
         applicationRepository.save(application);
     }
 

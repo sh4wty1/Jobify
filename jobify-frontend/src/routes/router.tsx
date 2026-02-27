@@ -10,6 +10,8 @@ import GlobalError from "@/pages/GlobalError";
 import ProtectedRoute from "./ProtectedRoute";
 import MyJobs from "@/pages/MyJobs";
 import MyApplications from "@/pages/MyApplications";
+import JobDetails from "@/pages/JobDetails";
+import JobApplications from "@/pages/JobApplications";
 
 export const router = createBrowserRouter([
     {
@@ -60,6 +62,22 @@ export const router = createBrowserRouter([
                         <MyApplications />
                     </ProtectedRoute>
                 )
+            },
+            {
+                path: "jobs/:id",
+                element: (
+                    <ProtectedRoute>
+                        <JobDetails />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "my-jobs/:id/applications",
+                element: (
+                    <ProtectedRoute requiredRole="COMPANY">
+                        <JobApplications />
+                    </ProtectedRoute>
+                ),
             },
         ],
     },

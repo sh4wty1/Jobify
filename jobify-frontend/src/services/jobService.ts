@@ -13,3 +13,8 @@ export const createJob = async (title: string, description: string) => {
 
     return response.data;
 };
+
+export const fetchJobById = async (jobId: number) => {
+    const response = await api.get(`/jobs/${jobId}`);
+    return response.data;
+};

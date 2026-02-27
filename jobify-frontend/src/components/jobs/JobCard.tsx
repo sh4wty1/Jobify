@@ -13,7 +13,7 @@ export default function JobCard({ job }: { job: Job }) {
                         <h3 className="text-lg font-medium text-zinc-100">
                             {job.title}
                         </h3>
-                        <p className="text-sm text-zinc-400">{job.company}</p>
+                        <p className="text-sm text-zinc-400">{job.companyName}</p>
                     </div>
                 </div>
 

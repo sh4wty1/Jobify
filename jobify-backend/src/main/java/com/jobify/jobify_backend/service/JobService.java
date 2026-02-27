@@ -50,8 +50,28 @@ public class JobService {
                 .toList();
     }
 
-    public List<Job> getByCompany(String email) {
+    public JobResponse getJobById(Long jobId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new RuntimeException("Job not found"));
+
+        return JobResponse.builder()
+                .id(job.getId())
+                .title(job.getTitle())
+                .description(job.getDescription())
+                .companyName(job.getCompany().getName())
+                .build();
+    }
+
+    public List<JobResponse> getByCompany(String email) {
         User company = userRepository.findByEmail(email).orElseThrow();
-        return jobRepository.findByCompanyId(company.getId());
+        return jobRepository.findByCompanyId(company.getId())
+                .stream()
+                .map(job -> JobResponse.builder()
+                        .id(job.getId())
+                        .title(job.getTitle())
+                        .description(job.getDescription())
+                        .companyName(job.getCompany().getName())
+                        .build())
+                .toList();
     }
 }

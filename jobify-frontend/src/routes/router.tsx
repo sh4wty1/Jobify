@@ -12,12 +12,13 @@ import MyJobs from "@/pages/MyJobs";
 import MyApplications from "@/pages/MyApplications";
 import JobDetails from "@/pages/JobDetails";
 import JobApplications from "@/pages/JobApplications";
+import AdminPanel from "@/pages/AdminPanel";
 
 export const router = createBrowserRouter([
     {
         path: "/",
         element: <Layout />,
-        errorElement: <GlobalError />, // 🔥 ESSENCIAL
+        errorElement: <GlobalError />,
         children: [
             {
                 path: "dashboard",
@@ -32,6 +33,14 @@ export const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute requiredRole="COMPANY">
                         <PostJob />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: "admin",
+                element: (
+                    <ProtectedRoute requiredRole="ADMIN">
+                        <AdminPanel />
                     </ProtectedRoute>
                 ),
             },

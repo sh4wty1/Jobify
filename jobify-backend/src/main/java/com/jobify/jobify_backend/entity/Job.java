@@ -22,6 +22,9 @@ public class Job {
     @Column(nullable = false, length = 2000)
     private String description;
 
+    @Column(name = "full_description", length = 10000)
+    private String fullDescription;
+
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = false)
     private User company;

@@ -42,4 +42,10 @@ public class JobController {
     public List<JobResponse> getMyJobs(Authentication authentication) {
         return jobService.getByCompany(authentication.getName());
     }
+
+    @DeleteMapping("/{jobId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteJobByAdmin(@PathVariable Long jobId) {
+        jobService.deleteJobByAdmin(jobId);
+    }
 }

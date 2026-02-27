@@ -25,6 +25,22 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(length = 1000)
+    private String bio;
+
+    @Column(name = "avatar_url", length = 1200)
+    private String avatarUrl;
+
+    @Column(name = "cv_file_name", length = 500)
+    private String cvFileName;
+
+    @Column(name = "cv_content_type", length = 200)
+    private String cvContentType;
+
+    @Lob
+    @Column(name = "cv_data")
+    private byte[] cvData;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 }

@@ -1,10 +1,22 @@
-import { Home, Plus, User, Briefcase, FileText } from "lucide-react";
-import { NavLink } from "react-router-dom";
-import { useAppSelector } from "@/store/hooks";
+import { Home, Plus, User, Briefcase, FileText, LogOut } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { logout } from "@/features/auth/authSlice";
 
 export default function Sidebar() {
     const { role } = useAppSelector((state) => state.auth);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const isCompany = role === "COMPANY";
+    const isCandidate = role === "CANDIDATE";
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    };
 
     return (
         <aside className="w-64 border-r border-zinc-800 bg-zinc-950 p-6 hidden md:flex flex-col gap-8">
@@ -12,8 +24,7 @@ export default function Sidebar() {
                 Jobify
             </h1>
 
-            <nav className="flex flex-col gap-2 text-sm">
-                {/* Dashboard */}
+            <nav className="flex flex-col gap-2 text-sm flex-1">
                 <NavLink
                     to="/dashboard"
                     className={({ isActive }) =>
@@ -28,8 +39,7 @@ export default function Sidebar() {
                     <Home size={16} /> Dashboard
                 </NavLink>
 
-                {/* COMPANY ONLY */}
-                {role === "COMPANY" && (
+                {isCompany && (
                     <>
                         <NavLink
                             to="/post-job"
@@ -61,8 +71,7 @@ export default function Sidebar() {
                     </>
                 )}
 
-                {/* CANDIDATE ONLY */}
-                {role === "CANDIDATE" && (
+                {isCandidate && (
                     <NavLink
                         to="/applications"
                         className={({ isActive }) =>
@@ -78,7 +87,6 @@ export default function Sidebar() {
                     </NavLink>
                 )}
 
-                {/* PROFILE (ambos) */}
                 <NavLink
                     to="/profile"
                     className={({ isActive }) =>
@@ -93,6 +101,10 @@ export default function Sidebar() {
                     <User size={16} /> Profile
                 </NavLink>
             </nav>
+
+            <Button variant="outline" className="w-full" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" /> Logout
+            </Button>
         </aside>
     );
 }

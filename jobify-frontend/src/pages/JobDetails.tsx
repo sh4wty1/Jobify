@@ -52,10 +52,23 @@ export default function JobDetails() {
     }
 
     return (
-        <div className="space-y-4 max-w-2xl">
-            <h2 className="text-2xl font-bold">{job.title}</h2>
-            <p className="text-zinc-400">Company: {job.companyName}</p>
-            <p className="text-zinc-300 whitespace-pre-line">{job.description}</p>
+        <div className="space-y-6 max-w-3xl">
+            <div className="space-y-2">
+                <h2 className="text-2xl font-bold">{job.title}</h2>
+                <p className="text-zinc-400">Company: {job.companyName}</p>
+            </div>
+
+            <div className="space-y-2 rounded-xl border border-zinc-800 p-5 bg-zinc-900">
+                <h3 className="text-zinc-100 font-semibold">Resumo</h3>
+                <p className="text-zinc-300 whitespace-pre-line">{job.description}</p>
+            </div>
+
+            {!!job.fullDescription && (
+                <div className="space-y-2 rounded-xl border border-zinc-800 p-5 bg-zinc-900">
+                    <h3 className="text-zinc-100 font-semibold">Descrição completa</h3>
+                    <p className="text-zinc-300 whitespace-pre-line">{job.fullDescription}</p>
+                </div>
+            )}
 
             {role === "CANDIDATE" && (
                 <Button onClick={handleApply} className="bg-white text-black hover:bg-zinc-200">

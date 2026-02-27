@@ -7,6 +7,5 @@ public class CreateJobRequest {
 
     private String title;
     private String description;
-
-
+    private String fullDescription;
 }

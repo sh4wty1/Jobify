@@ -15,6 +15,33 @@ export const updateMyProfile = async (payload: {
     return response.data;
 };
 
+export const uploadMyCv = async (file: File): Promise<UserProfile> => {
+    const form = new FormData();
+    form.append("file", file);
+    const response = await api.postForm<UserProfile>("/users/me/cv", form);
+    return response.data;
+};
+
+export const downloadMyCv = async () => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://localhost:8080/api/users/me/cv", {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(await response.text());
+    }
+
+    const blob = await response.blob();
+    const disposition = response.headers.get("content-disposition") || "";
+    const fileNameMatch = disposition.match(/filename=\"?([^\"]+)\"?/i);
+    const fileName = fileNameMatch?.[1] || "cv.pdf";
+
+    return { blob, fileName };
+};
+
 export const fetchUsersByAdmin = async (): Promise<UserProfile[]> => {
     const response = await api.get<UserProfile[]>("/users");
     return response.data;

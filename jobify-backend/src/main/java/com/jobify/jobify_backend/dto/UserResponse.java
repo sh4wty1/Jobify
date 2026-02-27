@@ -13,4 +13,6 @@ public class UserResponse {
     private String role;
     private String bio;
     private String avatarUrl;
+    private Boolean hasCv;
+    private String cvFileName;
 }

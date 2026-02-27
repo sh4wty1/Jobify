@@ -40,9 +40,33 @@ async function request<T = any>(
     return { data };
 }
 
+async function postForm<T = any>(path: string, formData: FormData): Promise<ApiResponse<T>> {
+    const token = localStorage.getItem("token");
+    const headers: Record<string, string> = {};
+
+    if (token && !path.startsWith("/auth")) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${BASE_URL}${path}`, {
+        method: "POST",
+        headers,
+        body: formData,
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(errorBody || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    return { data };
+}
+
 export const api = {
     get: <T = any>(path: string) => request<T>("GET", path),
     post: <T = any>(path: string, body?: unknown) => request<T>("POST", path, body),
     put: <T = any>(path: string, body?: unknown) => request<T>("PUT", path, body),
     delete: <T = any>(path: string) => request<T>("DELETE", path),
+    postForm,
 };

@@ -3,6 +3,7 @@ package com.jobify.jobify_backend.service;
 
 import com.jobify.jobify_backend.dto.AdminUpdateUserRequest;
 import com.jobify.jobify_backend.dto.CreateUserRequest;
+import com.jobify.jobify_backend.dto.CvFileResponse;
 import com.jobify.jobify_backend.dto.UpdateProfileRequest;
 import com.jobify.jobify_backend.dto.UserResponse;
 import com.jobify.jobify_backend.entity.Role;
@@ -13,7 +14,9 @@ import com.jobify.jobify_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -63,6 +66,38 @@ public class UserService {
         return toResponse(userRepository.save(user));
     }
 
+    public UserResponse uploadCv(String email, MultipartFile file) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+
+        if (user.getRole() != Role.CANDIDATE) {
+            throw new RuntimeException("Only candidates can upload CV");
+        }
+
+        try {
+            user.setCvFileName(file.getOriginalFilename());
+            user.setCvContentType(file.getContentType());
+            user.setCvData(file.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read CV file");
+        }
+
+        return toResponse(userRepository.save(user));
+    }
+
+    public CvFileResponse getMyCv(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+
+        if (user.getCvData() == null || user.getCvData().length == 0) {
+            throw new RuntimeException("CV not found");
+        }
+
+        return CvFileResponse.builder()
+                .data(user.getCvData())
+                .fileName(user.getCvFileName() == null ? "cv.pdf" : user.getCvFileName())
+                .contentType(user.getCvContentType() == null ? "application/octet-stream" : user.getCvContentType())
+                .build();
+    }
+
     public UserResponse updateUserByAdmin(Long userId, AdminUpdateUserRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -108,6 +143,8 @@ public class UserService {
                 .role(user.getRole().name())
                 .bio(user.getBio())
                 .avatarUrl(user.getAvatarUrl())
+                .hasCv(user.getCvData() != null && user.getCvData().length > 0)
+                .cvFileName(user.getCvFileName())
                 .build();
     }
 }

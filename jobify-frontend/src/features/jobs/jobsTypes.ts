@@ -15,4 +15,6 @@ export interface UserProfile {
     role: string;
     bio?: string;
     avatarUrl?: string;
+    hasCv?: boolean;
+    cvFileName?: string;
 }

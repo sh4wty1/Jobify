@@ -1,4 +1,4 @@
-import { Home, Plus, User, Briefcase, FileText } from "lucide-react";
+import { Home, Plus, User, Briefcase, FileText, Shield } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "@/store/hooks";
 import { cn } from "@/lib/utils";
@@ -13,7 +13,6 @@ export default function Sidebar() {
             </h1>
 
             <nav className="flex flex-col gap-2 text-sm">
-                {/* Dashboard */}
                 <NavLink
                     to="/dashboard"
                     className={({ isActive }) =>
@@ -28,7 +27,6 @@ export default function Sidebar() {
                     <Home size={16} /> Dashboard
                 </NavLink>
 
-                {/* COMPANY ONLY */}
                 {role === "COMPANY" && (
                     <>
                         <NavLink
@@ -61,7 +59,6 @@ export default function Sidebar() {
                     </>
                 )}
 
-                {/* CANDIDATE ONLY */}
                 {role === "CANDIDATE" && (
                     <NavLink
                         to="/applications"
@@ -78,7 +75,22 @@ export default function Sidebar() {
                     </NavLink>
                 )}
 
-                {/* PROFILE (ambos) */}
+                {role === "ADMIN" && (
+                    <NavLink
+                        to="/admin"
+                        className={({ isActive }) =>
+                            cn(
+                                "flex items-center gap-2 px-3 py-2 rounded-lg transition",
+                                isActive
+                                    ? "bg-zinc-800 text-white"
+                                    : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                            )
+                        }
+                    >
+                        <Shield size={16} /> Admin
+                    </NavLink>
+                )}
+
                 <NavLink
                     to="/profile"
                     className={({ isActive }) =>

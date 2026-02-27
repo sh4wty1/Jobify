@@ -25,6 +25,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(length = 1000)
+    private String bio;
+
+    @Column(name = "avatar_url", length = 1200)
+    private String avatarUrl;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 }

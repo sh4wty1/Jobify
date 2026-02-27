@@ -26,7 +26,7 @@ export default function JobCard({ job }: { job: Job }) {
                         to={`/jobs/${job.id}`}
                         className="text-sm text-zinc-300 hover:text-white transition"
                     >
-                        View details →
+                        Ver mais →
                     </Link>
                 </div>
             </CardContent>

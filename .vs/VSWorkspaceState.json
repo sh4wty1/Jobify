@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\jobify-frontend",
+    "\\jobify-frontend\\src",
+    "\\jobify-frontend\\src\\components",
+    "\\jobify-frontend\\src\\components\\layout",
+    "\\jobify-frontend\\src\\features",
+    "\\jobify-frontend\\src\\lib",
+    "\\jobify-frontend\\src\\pages",
+    "\\jobify-frontend\\src\\routes",
+    "\\jobify-frontend\\src\\services"
+  ],
+  "SelectedNode": "\\jobify-frontend\\src\\pages\\Dashboard.tsx",
+  "PreviewInSolutionExplorer": false
+}

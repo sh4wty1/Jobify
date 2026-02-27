@@ -2,6 +2,7 @@ package com.jobify.jobify_backend.controller;
 
 import com.jobify.jobify_backend.dto.ApplicationResponse;
 import com.jobify.jobify_backend.dto.ApplyRequest;
+import com.jobify.jobify_backend.dto.UpdateApplicationStatusRequest;
 import com.jobify.jobify_backend.entity.Application;
 import com.jobify.jobify_backend.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,20 @@ public class ApplicationController {
     public void apply(@RequestBody ApplyRequest request,
                       Authentication authentication) {
         applicationService.apply(request.getJobId(), authentication.getName());
+    }
+
+    @PutMapping("/{applicationId}/status")
+    @PreAuthorize("hasRole('COMPANY')")
+    public void updateStatus(
+            @PathVariable Long applicationId,
+            @RequestBody UpdateApplicationStatusRequest request,
+            Authentication authentication
+    ) {
+        applicationService.updateStatus(
+                applicationId,
+                request.getStatus(),
+                authentication.getName()
+        );
     }
 
     @GetMapping("/job/{jobId}")

@@ -2,8 +2,6 @@ package com.jobify.jobify_backend.controller;
 
 import com.jobify.jobify_backend.dto.CreateJobRequest;
 import com.jobify.jobify_backend.dto.JobResponse;
-import com.jobify.jobify_backend.entity.Job;
-import com.jobify.jobify_backend.entity.User;
 import com.jobify.jobify_backend.service.JobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,9 +32,14 @@ public class JobController {
         return jobService.getAllJobs();
     }
 
+    @GetMapping("/{jobId}")
+    public JobResponse getJobById(@PathVariable Long jobId) {
+        return jobService.getJobById(jobId);
+    }
+
     @GetMapping("/my-jobs")
     @PreAuthorize("hasRole('COMPANY')")
-    public List<Job> getMyJobs(Authentication authentication) {
+    public List<JobResponse> getMyJobs(Authentication authentication) {
         return jobService.getByCompany(authentication.getName());
     }
 }

@@ -22,29 +22,29 @@ const initialState: AuthState = {
     isAuthenticated: !!localStorage.getItem("token"),
 };
 
-export const login = createAsyncThunk(
-    "auth/login",
-    async ({ email, password }: { email: string; password: string }) => {
+export const login = createAsyncThunk<
+    { token: string },
+    { email: string; password: string }
+>("auth/login", async ({ email, password }) => {
         return await loginRequest(email, password);
-    }
-);
+    });
 
-export const register = createAsyncThunk(
-    "auth/register",
-    async ({
-        name,
-        email,
-        password,
-        role,
-    }: {
+export const register = createAsyncThunk<
+    { token: string },
+    {
         name: string;
         email: string;
         password: string;
         role: string;
-    }) => {
-        return await registerRequest(name, email, password, role);
     }
-);
+>("auth/register", async ({
+    name,
+    email,
+    password,
+    role,
+}) => {
+        return await registerRequest(name, email, password, role);
+    });
 
 const authSlice = createSlice({
     name: "auth",
@@ -61,26 +61,26 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(login.fulfilled, (state, action) => {
             const token = action.payload.token;
+
+            localStorage.setItem("token", token);
             const decoded = getUserFromToken();
 
             state.token = token;
             state.role = decoded?.role || null;
             state.email = decoded?.sub || null;
             state.isAuthenticated = true;
-
-            localStorage.setItem("token", token);
         });
 
         builder.addCase(register.fulfilled, (state, action) => {
             const token = action.payload.token;
+
+            localStorage.setItem("token", token);
             const decoded = getUserFromToken();
 
             state.token = token;
             state.role = decoded?.role || null;
             state.email = decoded?.sub || null;
             state.isAuthenticated = true;
-
-            localStorage.setItem("token", token);
         });
     },
 });

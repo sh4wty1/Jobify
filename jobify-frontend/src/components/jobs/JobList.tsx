@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchJobs } from "../../services/jobService";
 import JobCard from "./JobCard";
-
-interface Job {
-    id: number;
-    title: string;
-    description: string;
-    companyName: string;
-}
+import type { Job } from "@/features/jobs/jobsTypes";
 
 export default function JobList() {
     const [jobs, setJobs] = useState<Job[]>([]);
